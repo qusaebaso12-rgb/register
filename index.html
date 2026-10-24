@@ -1,10 +1,17 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>سجل متابعة الطلاب الذكي</title>
 <meta name="description" content="برنامج لتسجيل درجات الطلاب وحساب المعدلات وتحليل النتائج، ويحفظ البيانات على حساب المعلم.">
-<style>body{font:16px/1.9 Tahoma,sans-serif;max-width:760px;margin:auto;padding:20px;color:#1e2a25}h1{color:#1f5c4a}a.b{display:inline-block;background:#1f5c4a;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none}footer{margin-top:32px;border-top:1px solid #ccc;padding-top:12px}</style></head><body>
+<style>body{font:16px/1.9 Tahoma,sans-serif;max-width:760px;margin:auto;padding:20px;color:#1e2a25}h1{color:#1f5c4a}a.b{display:inline-block;background:#1f5c4a;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none}footer{margin-top:32px;border-top:1px solid #ccc;padding-top:12px}</style><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1f5c4a"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"></head><body>
 <h1>📒 سجل متابعة الطلاب الذكي</h1>
 <p><b>ما هو هذا البرنامج؟</b> أداة مجانية للمعلمين لتسجيل درجات الطلاب (الأنشطة والامتحانات الشهرية ونصف السنة والامتحان النهائي)، وحساب المعدلات والدرجة النهائية تلقائياً، وتحليل النتائج وإظهار الطلاب الذين يحتاجون متابعة، مع الاستيراد من ملفات Excel والتصدير إليها.</p>
 <p><b>كيف يتعامل مع حسابك في Google؟</b> يستخدم البرنامج تسجيل الدخول بحساب Google لمعرفة هويتك فقط (الاسم والبريد)، ثم يحفظ أسماء الطلاب ودرجاتهم في مساحة خاصة بحسابك داخل قاعدة بيانات Google Firebase، ولا يستطيع مستخدم آخر قراءتها. لا يصل البرنامج إلى ملفات Drive أو بريدك أو جهات اتصالك.</p>
-<p><a class="b" href="app.html">فتح البرنامج وتسجيل الدخول</a></p>
+<p><a class="b" href="app.html">فتح البرنامج وتسجيل الدخول</a></p><p><button class=ib hidden>📲 تثبيت التطبيق</button></p><p id=ios hidden style="color:#6f6b5c;font-size:14px">لتثبيته على الآيفون: اضغط زر المشاركة في Safari ثم «إضافة إلى الشاشة الرئيسية».</p>
 <footer><a href="privacy.html">سياسة الخصوصية</a> · <a href="privacy.html#en">Privacy Policy</a>
 <div dir="ltr" lang="en" style="text-align:left;margin-top:14px"><b>Smart Student Grade Tracker (سجل متابعة الطلاب الذكي)</b> is a free tool for teachers to record student grades, compute averages automatically, analyze results, and import/export Excel files. After sign-in with Google, the user's grades are stored in a private area tied to their account in Google Firebase (Firestore). Other users cannot read it. The app does not access Google Drive, email, or contacts.</div></footer>
-</body></html>
+<script>
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+let dp;const ib=document.querySelectorAll('.ib');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;ib.forEach(b=>b.hidden=false)});
+ib.forEach(b=>b.onclick=async()=>{if(!dp)return;dp.prompt();await dp.userChoice;dp=null;ib.forEach(x=>x.hidden=true)});
+window.addEventListener('appinstalled',()=>ib.forEach(b=>b.hidden=true));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone){const p=document.getElementById('ios');if(p)p.hidden=false}
+</script></body></html>

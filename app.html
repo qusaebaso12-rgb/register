@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>سجل متابعة الطلاب الذكي</title>
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>سجل متابعة الطلاب الذكي</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1f5c4a"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Noto+Naskh+Arabic:wght@700&display=swap">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -35,9 +35,9 @@ td.nm{text-align:start}td.nm input{width:170px;text-align:start}
 #ms{color:var(--br)}
 @media print{.np{display:none}.sc{overflow:visible}}
 .w{display:none}body.in .w{display:block}#lg{max-width:420px;margin:12vh auto;text-align:center;padding:24px}body.in #lg{display:none}#lg button{padding:10px 22px;font-size:17px}#le{color:var(--rd)}
-</style></head><body><div id=lg class=card><h1>📒 سجل متابعة الطلاب الذكي</h1><p>سجّل الدخول بحساب Google ليُحفظ سجلك على حسابك أنت ولا يراه غيرك. <a href="privacy.html">سياسة الخصوصية</a></p><button id=gb>تسجيل الدخول بحساب Google</button><p id=le></p></div><div class=w>
+</style></head><body><div id=lg class=card><h1>📒 سجل متابعة الطلاب الذكي</h1><p>سجّل الدخول بحساب Google ليُحفظ سجلك على حسابك أنت ولا يراه غيرك. <a href="privacy.html">سياسة الخصوصية</a></p><button id=gb>تسجيل الدخول بحساب Google</button><br><br><button class=ib hidden>📲 تثبيت التطبيق</button><p id=ios hidden style="color:#6f6b5c;font-size:14px">لتثبيته على الآيفون: اضغط زر المشاركة في Safari ثم «إضافة إلى الشاشة الرئيسية».</p><p id=le></p></div><div class=w>
 <div class="bar np"><h1>📒 سجل متابعة الطلاب الذكي</h1><span id=ms></span></div>
-<div class="bar np"><input data-m=school placeholder="المدرسة"><input data-m=teacher placeholder="الأستاذ"><input data-m=grade placeholder="الصف"><label>درجة النجاح <input data-m=th type=number min=1 max=100 style=width:64px></label><small style=color:var(--mu)>الحفظ تلقائي على حسابك</small><button id=lo>خروج</button></div>
+<div class="bar np"><input data-m=school placeholder="المدرسة"><input data-m=teacher placeholder="الأستاذ"><input data-m=grade placeholder="الصف"><label>درجة النجاح <input data-m=th type=number min=1 max=100 style=width:64px></label><small style=color:var(--mu)>الحفظ تلقائي على حسابك</small><button id=lo>خروج</button><button class=ib hidden>📲 تثبيت التطبيق</button></div>
 <div id=app></div><input type=file id=fl accept=".xlsx,.xls" hidden></div>
 <script>
 const KEY='sjl1',$=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -125,4 +125,12 @@ document.addEventListener('change',e=>{if(e.target.dataset.m=='th'){meta();rende
 document.addEventListener('keydown',e=>{const t=e.target;if(e.key!='Enter'||t.dataset.r==null||t.tagName!='INPUT')return;
 const n=document.querySelector(`input[data-r="${+t.dataset.r+1}"]${t.dataset.i?`[data-i="${t.dataset.i}"]`:t.dataset.f?`[data-f="${t.dataset.f}"]`:''}`);if(n){n.focus();n.select&&n.select()}});
 meta();render();
+</script>
+<script>
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+let dp;const ib=document.querySelectorAll('.ib');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;ib.forEach(b=>b.hidden=false)});
+ib.forEach(b=>b.onclick=async()=>{if(!dp)return;dp.prompt();await dp.userChoice;dp=null;ib.forEach(x=>x.hidden=true)});
+window.addEventListener('appinstalled',()=>ib.forEach(b=>b.hidden=true));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone){const p=document.getElementById('ios');if(p)p.hidden=false}
 </script></body></html>
