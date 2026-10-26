@@ -30,7 +30,7 @@ th{background:var(--ac2);font-size:13px}
 td input{width:52px;text-align:center;padding:3px}
 .nm{position:sticky;inset-inline-start:0;background:var(--sf)}th.nm{background:var(--ac2)}
 td.nm{text-align:start}td.nm input{width:170px;text-align:start}
-.ch{padding:1px 9px;border-radius:99px;font-size:13px;color:var(--mu)}.ok{background:var(--ac2);color:var(--ac)}.no{background:var(--rd2);color:var(--rd)}.wn{background:var(--am2);color:var(--br)}
+.ch{padding:1px 9px;border-radius:99px;font-size:13px;color:var(--mu)}.ok{background:var(--ac2);color:var(--ac)}.no{background:var(--rd2);color:var(--rd)}.wn{background:var(--am2);color:var(--br)}.vg{background:var(--ac);color:var(--sf)}
 .hs{display:flex;align-items:flex-end;gap:8px;height:150px;margin-top:8px}.hs div{flex:1;text-align:center;font-size:12px;display:flex;flex-direction:column;justify-content:flex-end}.hs i{display:block;background:var(--ac);border-radius:4px 4px 0 0;min-height:2px}
 #ms{color:var(--br)}
 @media print{.np{display:none}.sc{overflow:visible}}
@@ -64,25 +64,25 @@ function save(){clearTimeout(tm);if(ref)tm=setTimeout(async()=>{try{await ref.se
 au.onAuthStateChanged(u=>{if(u)enter(u)});
 $('#gb').onclick=async()=>{$('#le').textContent='';const p=new firebase.auth.GoogleAuthProvider();try{await au.signInWithPopup(p)}catch(e){if(e.code=='auth/popup-blocked')au.signInWithRedirect(p);else $('#le').textContent='تعذّر تسجيل الدخول: '+(e.code||'')}};
 $('#lo').onclick=()=>au.signOut().then(()=>location.reload());
-function meta(){document.querySelectorAll('[data-m]').forEach(i=>i.value=i.dataset.m=='th'?S.th:i.dataset.m=='gd'?(S.gd||70):(S.m[i.dataset.m]||''))}
+function meta(){document.querySelectorAll('[data-m]').forEach(i=>i.value=i.dataset.m=='th'?S.th:i.dataset.m=='gd'?(S.gd||70):/^rg\d\d$/.test(i.dataset.m)?rg()[+i.dataset.m[2]][+i.dataset.m[3]]:(S.m[i.dataset.m]||''))}
 /* views */
 const K4=['ش1 · ف1','ش2 · ف1','ش1 · ف2','ش2 · ف2'],hp=(s,k)=>s.p[k].some(v=>v!==''),ac=(s,k)=>s.p[k].slice(0,10),COLS=[];
 [0,1,2,3].forEach(k=>COLS.push(['a'+k,K4[k]+' · الأنشطة',s=>ac(s,k).some(v=>v!=='')?sm(ac(s,k)):null],['x'+k,K4[k]+' · الامتحان',s=>s.p[k][10]===''?null:+s.p[k][10]],['q'+k,K4[k]+' · معدل الشهر',s=>hp(s,k)?(sm(ac(s,k))+z(s.p[k][10]))/2:null]));
 COLS.push(['s1','معدل الفصل الأول',s=>hp(s,0)||hp(s,1)?calc(s).s1:null],['m','نصف السنة',s=>s.m===''?null:+s.m],['s2','معدل الفصل الثاني',s=>hp(s,2)||hp(s,3)?calc(s).s2:null],['ef','السعي السنوي',s=>has(s)?calc(s).ef:null],['f','الامتحان النهائي',s=>s.f===''?null:+s.f],['fin','الدرجة النهائية',s=>s.f===''?null:calc(s).fin]);
-const RN=[['ضعيف','no'],['متوسط','wn'],['جيد','ok']],rt=v=>v<S.th?0:v<(S.gd||70)?1:2,mean=a=>a.length?a.reduce((t,v)=>t+v,0)/a.length:NaN;
+const RN=[['ضعيف','no'],['متوسط','wn'],['جيد','ok'],['جيد جدا','vg']],RX=[...RN,['غير مصنّف','']],rg=()=>{let r=S.rg;if(!Array.isArray(r)||!Array.isArray(r[0])){const b=Array.isArray(r)?r:[S.th,S.gd||70,80];r=S.rg=[[0,b[0]-1],[b[0],b[1]-1],[b[1],b[2]-1],[b[2],100]]}return r},okb=b=>b!==''&&b!=null&&!isNaN(b),rt=v=>{const q=Math.round(v);let k=-1;rg().forEach(([a,b],i)=>{if(okb(a)&&okb(b)&&q>=a&&q<=b)k=i});return k},mean=a=>a.length?a.reduce((t,v)=>t+v,0)/a.length:NaN;
 const selc=()=>(S.an&&S.an.length?S.an:(S.an=['ef'])).map(k=>COLS.find(c=>c[0]==k)).filter(Boolean);
 const evalSel=L=>{const sel=selc();return L.map(s=>{const vs=sel.map(c=>c[2](s)).filter(v=>v!==null);return{s,v:vs.length?mean(vs):null}}).filter(x=>x.v!==null)};
-function dash(){const L=cur(),R=evalSel(L),sel=selc(),n=R.length,g=[[],[],[]],B=[0,0,0,0,0,0],lb=['<50','50–59','60–69','70–79','80–89','90+'];
-R.forEach(x=>{g[rt(x.v)].push(x);B[Math.min(5,Math.max(0,Math.floor(x.v/10)-4))]++});
+function dash(){const SR=Object.entries(S.secs).map(([k,l])=>{const r=evalSel(l),c=[0,0,0,0,0];r.forEach(x=>{const i=rt(x.v);c[i<0?4:i]++});return[k,l.length,r.length,mean(r.map(x=>x.v)),c]}),ux=SR.some(x=>x[4][4]);const L=cur(),R=evalSel(L),sel=selc(),n=R.length,g=[[],[],[],[],[]],B=[0,0,0,0,0,0],lb=['<50','50–59','60–69','70–79','80–89','90+'];
+R.forEach(x=>{{const i=rt(x.v);g[i<0?4:i].push(x)}B[Math.min(5,Math.max(0,Math.floor(x.v/10)-4))]++});
 const mx=Math.max(1,...B),vals=R.map(x=>x.v),kp=a=>a.map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('');
 return`<div class=card><b>اختر الأعمدة المراد تحليلها</b> <small>(عند اختيار أكثر من عمود يُحسب التقييم من متوسطها)</small><div class=bar>${COLS.map(c=>`<button data-a=ac data-v=${c[0]} class="${sel.includes(c)?'on':''}">${c[1]}</button>`).join('')}</div>
-<div class=bar>حدود التقييم: ضعيف أقل من <b>${S.th}</b> · جيد من <input data-m=gd type=number min=1 max=100 value=${S.gd||70} style=width:64px> فما فوق · وما بينهما متوسط. الطالب الذي لم تُدخل له درجة في الأعمدة المختارة لا يُحسب.</div></div>
+${RN.map(([t,c],i)=>`<div class=bar>${ch([t,c])} من <input data-m=rg${i}0 type=number min=0 max=100 value="${rg()[i][0]}" style=width:64px> إلى <input data-m=rg${i}1 type=number min=0 max=100 value="${rg()[i][1]}" style=width:64px></div>`).join('')}<div class=bar><small>حدّد لكل تقييم بدايته ونهايته (شاملة). تُقرَّب الدرجة إلى أقرب رقم صحيح قبل التقييم. من لم تُدخل له درجة في الأعمدة المختارة لا يُحسب، ومن تقع درجته خارج كل الحدود يظهر تحت «غير مصنّف».</small></div></div>
 <div class=k>${kp([['الطلاب المشمولون',n+' / '+L.length],['المتوسط',f1(mean(vals))],['الأعلى',n?f1(Math.max(...vals)):'-'],['الأدنى',n?f1(Math.min(...vals)):'-']])}</div>
-<div class=k style=margin-top:10px>${kp(RN.map(([t],i)=>[t+(n?' · '+f1(g[i].length/n*100)+'%':''),g[i].length]))}</div>
-<div class=g2>${RN.map(([t,c],i)=>`<div class=card>${ch([t,c])} <b>${g[i].length}</b>${g[i].sort((a,b)=>a.v-b.v).map(x=>`<p>${esc(x.s.n)} — ${f1(x.v)}</p>`).join('')||'<p>—</p>'}</div>`).join('')}</div>
+<div class=k style=margin-top:10px>${kp(RX.filter((_,i)=>i<4||g[4].length).map(([t],i)=>[t+(n?' · '+f1(g[i].length/n*100)+'%':''),g[i].length]))}</div>
+<div class=g2>${RX.filter((_,i)=>i<4||g[4].length).map(([t,c],i)=>`<div class=card>${ch([t,c])} <b>${g[i].length}</b>${g[i].sort((a,b)=>a.v-b.v).map(x=>`<p>${esc(x.s.n)} — ${f1(x.v)}</p>`).join('')||'<p>—</p>'}</div>`).join('')}</div>
 <div class=g2><div class=card><b>توزيع الدرجات</b><div class=hs>${B.map((c,i)=>`<div>${c}<i style="height:${c/mx*90}px"></i>${lb[i]}</div>`).join('')}</div></div>
 ${sel.length>1?`<div class=card><b>تفصيل الأعمدة</b><div class=sc><table><tr><th>العمود<th>العدد<th>المتوسط<th>الأعلى<th>الأدنى</tr>${sel.map(c=>{const v=L.map(c[2]).filter(x=>x!==null);return`<tr><td>${c[1]}<td>${v.length}<td>${f1(mean(v))}<td>${v.length?f1(Math.max(...v)):'-'}<td>${v.length?f1(Math.min(...v)):'-'}</tr>`}).join('')}</table></div></div>`:''}</div>
-<div class=card><b>مقارنة الشعب (حسب الأعمدة المختارة)</b><div class=sc><table><tr><th>الشعبة<th>الطلاب<th>المشمولون<th>المتوسط<th>ضعيف<th>متوسط<th>جيد</tr>${Object.entries(S.secs).map(([k,l])=>{const r=evalSel(l),c=[0,0,0];r.forEach(x=>c[rt(x.v)]++);return`<tr><td>${esc(k)}<td>${l.length}<td>${r.length}<td>${f1(mean(r.map(x=>x.v)))}<td>${c[0]}<td>${c[1]}<td>${c[2]}</tr>`}).join('')}</table></div></div>`}
+<div class=card><b>مقارنة الشعب (حسب الأعمدة المختارة)</b><div class=sc><table><tr><th>الشعبة<th>الطلاب<th>المشمولون<th>المتوسط<th>ضعيف<th>متوسط<th>جيد<th>جيد جدا${ux?'<th>غير مصنّف':''}</tr>${SR.map(([k,a,b,m,c])=>`<tr><td>${esc(k)}<td>${a}<td>${b}<td>${f1(m)}<td>${c[0]}<td>${c[1]}<td>${c[2]}<td>${c[3]}${ux?'<td>'+c[4]:''}</tr>`).join('')}</table></div></div>`}
 const ex=s=>{const c=calc(s);return S.k=='m'?'معدل ف1: '+f1(c.s1):`السعي ${f1(c.ef)} ← <b>${c.done?f1(c.fin):'—'}</b> ${ch(c.st)}`};
 function inp(){const L=cur(),k=S.k,q=k[0]=='p'?+k[1]:-1;
 let h=`<div class="bar np">${KS.map(([a,b])=>`<button data-a=k data-v=${a} class="${a==k?'on':''}">${b}</button>`).join('')}</div><details class=np><summary>＋ إضافة طلاب</summary><div class=bar><textarea id=nm rows=4 placeholder="الصق الأسماء (اسم في كل سطر)" style="flex:1;min-width:220px"></textarea><button data-a=an>إضافة الأسماء</button><button data-a=a1>＋ طالب فارغ</button></div></details>`;
@@ -125,13 +125,13 @@ else if(a=='imp')return $('#fl').click();else if(a=='exp')return exp();else if(a
 save();render()});
 $('#fl').addEventListener('change',e=>{if(e.target.files[0])imp(e.target.files[0]);e.target.value=''});
 document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
-if(d.m){if(d.m=='th'){S.th=Math.min(100,Math.max(1,+t.value||50))}else if(d.m=='gd'){S.gd=Math.min(100,Math.max(1,+t.value||70))}else S.m[d.m]=t.value;return save()}
+if(d.m){if(d.m=='th'){S.th=Math.min(100,Math.max(1,+t.value||50))}else if(/^rg\d\d$/.test(d.m)){rg()[+d.m[2]][+d.m[3]]=t.value===''?'':Math.min(100,Math.max(0,+t.value))}else S.m[d.m]=t.value;return save()}
 if(d.s){const q=t.value.trim();document.querySelectorAll('tbody tr').forEach(tr=>tr.style.display=tr.textContent.includes(q)?'':'none');return}
 if(d.r==null)return;const s=cur()[+d.r];if(!s)return;
 if(d.f=='n')s.n=t.value;else{let v=t.value===''?'':+t.value;if(v!==''){const c=Math.min(+t.max,Math.max(0,v));if(c!==v){v=c;t.value=c}}if(d.f)s[d.f]=v;else s.p[+d.q][+d.i]=v}
 const tr=t.closest('tr'),e2=(c,h)=>{const x=tr.querySelector(c);if(x)x.innerHTML=h};
 if(S.k[0]=='p'){const a=s.p[+S.k[1]],T=sm(a.slice(0,10));e2('.sm',f1(T));e2('.av',f1((T+z(a[10]))/2))}e2('.ex',ex(s));save()});
-document.addEventListener('change',e=>{if(['th','gd'].includes(e.target.dataset.m)){meta();render()}});
+document.addEventListener('change',e=>{if(/^(th|gd|rg\d\d)$/.test(e.target.dataset.m||'')){meta();render()}});
 document.addEventListener('keydown',e=>{const t=e.target;if(e.key!='Enter'||t.dataset.r==null||t.tagName!='INPUT')return;
 const n=document.querySelector(`input[data-r="${+t.dataset.r+1}"]${t.dataset.i?`[data-i="${t.dataset.i}"]`:t.dataset.f?`[data-f="${t.dataset.f}"]`:''}`);if(n){n.focus();n.select&&n.select()}});
 meta();render();
