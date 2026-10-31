@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>سجل متابعة الطلاب الذكي</title>
+<meta name="description" content="برنامج مجاني للمعلمين: إدخال درجات الطلاب، حساب المعدلات تلقائياً، تحليل النتائج وتقييمها، كشوف للطباعة وExcel، وحفظ خاص بحساب كل معلم.">
+<meta property="og:type" content="website"><meta property="og:title" content="سجل متابعة الطلاب الذكي"><meta property="og:description" content="درجات طلابك في مكان واحد: حساب تلقائي، تحليل وتقييم، كشوف للطباعة وExcel.">
+<meta name="theme-color" content="#0a2a22"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<link rel="preload" href="fonts/rk-ar-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Reem Kufi';font-weight:700;font-display:swap;src:url(fonts/rk-ar-700.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+@font-face{font-family:'Reem Kufi';font-weight:700;font-display:swap;src:url(fonts/rk-lt-700.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2212}
+@font-face{font-family:'Plex AR';font-weight:400;font-display:swap;src:url(fonts/px-ar-400.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+@font-face{font-family:'Plex AR';font-weight:400;font-display:swap;src:url(fonts/px-lt-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2212}
+@font-face{font-family:'Plex AR';font-weight:600 700;font-display:swap;src:url(fonts/px-ar-600.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+@font-face{font-family:'Plex AR';font-weight:600 700;font-display:swap;src:url(fonts/px-lt-600.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2212}
+:root{--ink:#0a2a22;--em:#17503f;--brass:#c4962f;--brass2:#e8c875;--paper:#f1f4ef;--tx:#13221d;--mu:#55655f;--ln:#d5ddd6;--sf:#fff;--hd:#17503f;--kf:'Reem Kufi','Plex AR',serif;--bd:'Plex AR',Tahoma,sans-serif;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--paper:#0b1512;--tx:#e8efe9;--mu:#9db0a7;--ln:#233630;--sf:#13221d;--hd:#7fcfb0}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--tx);font:400 16px/1.85 var(--bd);-webkit-text-size-adjust:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brass2);outline-offset:3px}
+.hero{position:relative;background:var(--ink);color:#eef4ef;overflow:hidden;padding:env(safe-area-inset-top,0px) 20px 96px}
+.pat{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23e8c875' stroke-opacity='.2'%3E%3Crect x='14' y='14' width='44' height='44'/%3E%3Crect x='14' y='14' width='44' height='44' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 22%,#000,transparent);mask-image:radial-gradient(ellipse 80% 60% at 50% 22%,#000,transparent)}
+.nav{position:relative;max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;text-decoration:none}
+.mark{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--em);border:1px solid rgba(232,200,117,.5);color:var(--brass2);font:700 22px/1 var(--kf)}
+.ib{display:none;border:1px solid rgba(255,255,255,.28);background:transparent;color:inherit;border-radius:10px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.ib.on{display:inline-block}
+.wrap{position:relative;max-width:900px;margin:0 auto;text-align:center;padding-top:30px}
+h1{margin:0;font:700 clamp(46px,10.5vw,104px)/1.12 var(--kf);text-wrap:balance}
+h1 span{display:block}
+.lead{max-width:620px;margin:22px auto 0;font-size:clamp(16px,2.4vw,19px);color:rgba(238,244,239,.82);text-wrap:balance}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-width:min(340px,88vw);margin-top:34px;padding:18px 40px;border-radius:14px;background:var(--brass);color:#1b1405;font:700 21px var(--bd);text-decoration:none;box-shadow:0 14px 34px -12px rgba(196,150,47,.75);transition:transform .15s,background .15s}
+.cta:hover{background:var(--brass2);transform:translateY(-2px)}
+.note{margin:10px 0 0;font-size:14px;color:rgba(238,244,239,.62)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.sec{border:1px solid rgba(255,255,255,.28);background:transparent;color:#eef4ef;border-radius:12px;padding:11px 20px;font:600 15px var(--bd);text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s}
+.sec:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.5)}
+#ios{margin:14px 0 0;font-size:14px;color:rgba(238,244,239,.7)}
+/* notebook page: the one memorable element */
+.page{position:relative;max-width:660px;margin:64px auto 0;padding:26px 28px 30px 30px;padding-inline-start:78px;background-color:#fff;background-image:repeating-linear-gradient(transparent 0 35px,#cfe0f1 35px 36px);background-position:0 26px;color:#14233a;border-radius:8px;text-align:start;box-shadow:0 46px 70px -34px rgba(0,0,0,.8);transform:rotate(-.9deg)}
+.page::before{content:'';position:absolute;inset-block:0;inset-inline-start:56px;width:2px;background:#e4574d}
+.page::after{content:'';position:absolute;top:-11px;inset-inline-start:50%;width:120px;height:24px;margin-inline-start:-60px;background:rgba(196,150,47,.9);border-radius:3px;transform:rotate(1.5deg);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pt{margin:6px 0 2px;font:700 26px/1.4 var(--kf);color:var(--em)}
+.ph{margin:0 0 14px;font-size:14px;color:#51657a}
+.fl{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.fl label{display:block;font-size:14px;font-weight:600;color:#33506a}
+.fl input{display:block;width:100%;height:56px;margin-top:2px;border:0;border-bottom:2px solid var(--em);background:transparent;color:#0a2a22;font:700 34px var(--bd);text-align:center;border-radius:0}
+.fl input:focus{outline:0;border-bottom-color:var(--brass);background:rgba(232,200,117,.14)}
+.res{display:flex;align-items:center;gap:22px;margin-top:22px;min-height:112px}
+.stamp{flex:none;display:grid;place-items:center;align-content:center;width:106px;height:106px;border-radius:50%;border:3px solid currentColor;outline:2px solid currentColor;outline-offset:-9px;transform:rotate(-8deg);text-align:center;font-family:var(--kf);transition:color .2s}
+.stamp b{font-size:40px;line-height:1}.stamp small{font:700 14px var(--bd)}
+.k0{color:#b3382c}.k1{color:#a06a00}.k2{color:#0f6b58}.k3{color:#1c7a38}
+.eq{font-size:17px;font-weight:600;direction:ltr;text-align:start;unicode-bidi:plaintext}
+.ex{margin:2px 0 0;font-size:14px;color:#51657a}
+/* sections */
+.feat{max-width:1040px;margin:0 auto;padding:84px 20px 20px;display:grid;grid-template-columns:repeat(4,1fr)}
+.feat div{padding:4px 24px}.feat div+div{border-inline-start:1px solid var(--ln)}
+.feat svg{width:36px;height:36px;margin-bottom:10px;stroke:var(--brass);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.feat h3{margin:0 0 4px;font:700 20px var(--kf);color:var(--hd)}
+.feat p{margin:0;font-size:15px;color:var(--mu)}
+.sh{max-width:1040px;margin:0 auto;padding:72px 20px 0}
+.sh h2{margin:0;font:700 clamp(28px,4.5vw,42px)/1.3 var(--kf);color:var(--hd);text-wrap:balance}
+.sh p{max-width:620px;margin:8px 0 26px;color:var(--mu)}
+.tb{max-width:1000px;margin:0 20px;margin-inline:auto;background:var(--sf);border:1px solid var(--ln);border-radius:14px;overflow:hidden}
+.tb .sc{overflow-x:auto}
+.tb table{width:100%;border-collapse:collapse;font-size:15px;min-width:660px}
+.tb th{padding:11px 14px;text-align:center;font-weight:600;font-size:13px;color:var(--hd);background:rgba(23,80,63,.08);border-bottom:1px solid var(--ln);white-space:nowrap}
+.tb td{padding:11px 14px;text-align:center;border-bottom:1px solid var(--ln)}
+.tb tr:last-child td{border-bottom:0}
+.tb td:first-child,.tb th:first-child{text-align:start;font-weight:600}
+.ch{display:inline-block;padding:1px 12px;border-radius:99px;font-size:13px;font-weight:600}
+.c0{background:#f8dad5;color:#9c2d20}.c1{background:#f6e6bd;color:#7a5410}.c2{background:#d3ebe6;color:#0f5b4c}.c3{background:#cfe9d5;color:#16572d}
+.band{max-width:1000px;margin:84px auto 0;padding:46px 28px;border-radius:22px;background:var(--ink);color:#eef4ef;text-align:center;position:relative;overflow:hidden}
+.band .pat{-webkit-mask-image:radial-gradient(ellipse 70% 100% at 50% 0,#000,transparent);mask-image:radial-gradient(ellipse 70% 100% at 50% 0,#000,transparent)}
+.band h2{position:relative;margin:0;font:700 clamp(28px,5vw,44px)/1.3 var(--kf)}
+.band p{position:relative;margin:6px 0 0;color:rgba(238,244,239,.78)}
+.band .cta{position:relative;margin-top:24px}
+main{padding:0 20px}
+footer{max-width:1000px;margin:56px auto 0;padding:26px 20px calc(36px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;color:var(--mu);font-size:14px;border-top:1px solid var(--ln)}
+footer nav{display:flex;gap:20px}footer a{text-decoration:none;color:var(--hd);font-weight:600}footer a:hover{text-decoration:underline}
+dialog{border:0;padding:0;width:min(940px,94vw);max-height:90vh;border-radius:18px;background:var(--sf);color:var(--tx);box-shadow:0 40px 80px -20px rgba(0,0,0,.55)}
+dialog[open]{display:flex;flex-direction:column;animation:dp .22s ease}
+dialog::backdrop{background:rgba(6,22,17,.62);backdrop-filter:blur(3px)}
+@keyframes dp{from{opacity:0;transform:translateY(10px) scale(.985)}}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--ink);color:#eef4ef;border-bottom:3px solid var(--brass)}
+.dh h2{margin:0;font:700 24px var(--kf)}
+.x{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:transparent;color:inherit;font-size:18px;cursor:pointer}
+.x:hover{background:rgba(255,255,255,.1)}
+.db{overflow:auto;padding:4px 24px;overscroll-behavior:contain}
+.db section{display:grid;grid-template-columns:210px 1fr;gap:10px 28px;padding:18px 0;border-top:1px solid var(--ln)}
+.db section:first-child{border-top:0}
+.db h3{margin:0;font:700 17px var(--bd);color:var(--hd)}
+.db ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.db li{position:relative;padding-inline-start:20px}
+.db li::before{content:'';position:absolute;inset-inline-start:2px;top:.78em;width:7px;height:7px;background:var(--brass);transform:rotate(45deg)}
+.df{padding:14px 24px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ln);display:flex;justify-content:center}
+.df .cta{margin:0;padding:13px 36px;font-size:18px}
+@media(max-width:860px){.feat{grid-template-columns:1fr 1fr;row-gap:30px}.feat div:nth-child(3){border-inline-start:0}}
+@media(max-width:720px){.page{transform:none;padding:22px 18px 24px 18px;padding-inline-start:52px;margin-top:48px}.page::before{inset-inline-start:34px}.fl{gap:14px}.fl input{font-size:28px}.stamp{width:92px;height:92px}.stamp b{font-size:34px}.res{gap:14px}.db section{grid-template-columns:1fr;gap:6px}.feat{grid-template-columns:1fr}.feat div+div{border-inline-start:0;border-top:1px solid var(--ln);padding-top:22px}.feat div{padding:4px 0}}
+@media(prefers-reduced-motion:reduce){dialog[open]{animation:none}.cta,.stamp{transition:none}}
+</style></head><body>
+<header class="hero">
+<div class="pat" aria-hidden="true"></div>
+<div class="nav"><a class="brand" href="index.html"><span class="mark" aria-hidden="true">س</span><span>سجل متابعة الطلاب الذكي</span></a><button class="ib" type="button">تثبيت التطبيق على جهازك</button></div>
+<div class="wrap">
+<h1><span>سجل متابعة</span><span>الطلاب الذكي</span></h1>
+<p class="lead">درجات طلابك في مكان واحد: تُدخلها بسرعة، فيحسب البرنامج المعدلات ويحلّل النتائج ويجهّز الكشوف للطباعة وExcel. وكل ذلك محفوظ في حسابك وحدك.</p>
+<a class="cta" href="app.html">تسجيل الدخول</a>
+<p class="note">الدخول بحساب Google · البرنامج مجاني</p>
+<div class="row"><button class="sec" type="button" id="of">مميزات البرنامج</button><a class="sec" href="privacy.html">الخصوصية</a><a class="sec" href="contact.html" target="_blank" rel="noopener">تواصل مع المبرمج</a></div>
+<p id="ios" hidden>لتثبيته على الآيفون: اضغط زر المشاركة في Safari ثم «إضافة إلى الشاشة الرئيسية».</p>
+<div class="page" aria-labelledby="pt">
+<h2 class="pt" id="pt">جرّب حساب معدل الشهر</h2>
+<p class="ph">غيّر الرقمين وانظر كيف يحسب البرنامج ويقرّب. جرّب كتابة غ أو مج.</p>
+<div class="fl"><label>مجموع الأنشطة<input id="ia" value="85" inputmode="text" autocomplete="off" aria-describedby="ex"></label><label>درجة الامتحان<input id="ie" value="60" inputmode="text" autocomplete="off" aria-describedby="ex"></label></div>
+<div class="res" aria-live="polite"><div class="stamp k2" id="st"><b id="sn">73</b><small id="sl">جيد</small></div><div><div class="eq" id="eq">(85 + 60) ÷ 2 = 72.5</div><p class="ex" id="ex">72.5 تُقرَّب إلى 73، فكل ما كان 0.5 فأكثر يرتفع.</p></div></div>
+</div>
+</div></header>
+<main>
+<section class="feat" aria-label="ما يميّز البرنامج">
+<div><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h1M12 12h1M16 12h0M8 16h1M12 16h1M16 16h0"/></svg><h3>تحسب بدلاً عنك</h3><p>المجاميع والمعدلات والدرجة النهائية فور إدخال الدرجة، بتقريب كالسجل الورقي.</p></div>
+<div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><h3>سجلك لك وحدك</h3><p>بيانات كل معلم في حسابه ولا يراها غيره، ويمكنك الخروج بأمان من أي جهاز.</p></div>
+<div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9a14 14 0 0118 0M6 12.5a9.5 9.5 0 0112 0M9 16a5 5 0 016 0"/><circle cx="12" cy="19.5" r=".8"/></svg><h3>يتحمل ضعف الاتصال</h3><p>يحفظ عملك على جهازك ويرفعه تلقائياً عند توفر الإنترنت.</p></div>
+<div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 01-2-2v-4a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></svg><h3>كشوف جاهزة</h3><p>طباعة وPDF بأحجام وصفحات تركّبها أنت، وتصدير إلى Excel بمعادلات حية.</p></div>
+</section>
+<section class="sh"><h2>من الدرجة إلى الكشف في خطوة واحدة</h2><p>الفصل الأول، ثم نصف السنة، ثم الفصل الثاني، فالسعي والدرجة النهائية والتقييم: كلها تُبنى تلقائياً بقواعد السجل الورقي نفسها.</p></section>
+<div class="tb"><div class="sc"><table><thead><tr><th>الطالب</th><th>الفصل الأول</th><th>نصف السنة</th><th>الفصل الثاني</th><th>السعي</th><th>النهائي</th><th>الدرجة</th><th>التقييم</th></tr></thead><tbody>
+<tr><td>أحمد علي</td><td>78</td><td>82</td><td>80</td><td>80</td><td>90</td><td><b>85</b></td><td><span class="ch c3">جيد جداً</span></td></tr>
+<tr><td>زينب حسن</td><td>66</td><td>70</td><td>68</td><td>68</td><td>74</td><td><b>71</b></td><td><span class="ch c2">جيد</span></td></tr>
+<tr><td>محمد كريم</td><td>52</td><td>55</td><td>54</td><td>54</td><td>62</td><td><b>58</b></td><td><span class="ch c1">متوسط</span></td></tr>
+<tr><td>سارة نور</td><td>91</td><td>94</td><td>92</td><td>92</td><td>98</td><td><b>95</b></td><td><span class="ch c3">جيد جداً</span></td></tr>
+<tr><td>علي صالح</td><td>38</td><td>42</td><td>40</td><td>40</td><td>48</td><td><b>44</b></td><td><span class="ch c0">ضعيف</span></td></tr>
+</tbody></table></div></div>
+<p style="max-width:1000px;margin:10px auto 0;font-size:13px;color:var(--mu)">بيانات تجريبية للتوضيح فقط.</p>
+<section class="band"><div class="pat" aria-hidden="true"></div><h2>ابدأ بشعبتك الأولى</h2><p>سجّل الدخول بحساب Google وأضف أسماء طلابك، وسيتولى البرنامج الباقي.</p><a class="cta" href="app.html">تسجيل الدخول</a></section>
+</main>
+<footer><span>© 2026 سجل متابعة الطلاب الذكي</span><nav><a href="privacy.html">الخصوصية</a><a href="contact.html" target="_blank" rel="noopener">تواصل مع المبرمج</a></nav></footer>
+<dialog id="fd" aria-labelledby="ft">
+<div class="dh"><h2 id="ft">مميزات البرنامج</h2><button class="x" type="button" aria-label="إغلاق">✕</button></div>
+<div class="db">
+<section><h3>الحساب والخصوصية</h3><ul><li>تسجيل دخول آمن بحساب Google</li><li>سجل كل معلم خاص به ولا يراه غيره</li><li>حفظ تلقائي في حسابك وتجده من أي جهاز</li><li>خروج آمن لا يترك بياناتك على الأجهزة المشتركة</li></ul></section>
+<section><h3>الشعب والطلاب</h3><ul><li>شعب متعددة: أضف وسمِّ واحذف بحرية</li><li>لصق قائمة أسماء الطلاب دفعة واحدة</li><li>ترتيب الأسماء هجائياً تلقائياً، حتى لو أضفت اسماً لاحقاً</li><li>مقارنة بين الشعب في التحليل</li></ul></section>
+<section><h3>إدخال الدرجات</h3><ul><li>أربع فترات شهرية، في كل فترة 10 أنشطة (5 لاصفي و5 صفي) وامتحان</li><li>درجة نصف السنة والامتحان النهائي</li><li>غ للغائب ومج للمجاز، وتُحسبان صفراً</li><li>تقريب الكسور تلقائياً: من 0.5 فأكثر يرتفع</li><li>تسمية اختيارية لكل نشاط</li><li>التنقل بزر Enter، ومنع الدرجات الأعلى من الحد</li></ul></section>
+<section><h3>الحساب التلقائي</h3><ul><li>مجموع الأنشطة ومعدل الشهر ومعدل كل فصل</li><li>السعي السنوي والدرجة النهائية</li><li>تقريب المعدلات في كل مرحلة كالسجل الورقي</li><li>الدرجة المطلوبة في الامتحان النهائي ليحقق الطالب النجاح</li></ul></section>
+<section><h3>التحليل والتقييم</h3><ul><li>اختر الأعمدة التي تريد تحليلها</li><li>أربعة تقييمات: ضعيف ومتوسط وجيد وجيد جداً</li><li>حدود كل تقييم (من وإلى) تحددها أنت</li><li>جدول بتقييم كل طالب بحسب ترتيبه في الشعبة</li><li>المتوسط والأعلى والأدنى، ورسم لتوزيع الدرجات</li></ul></section>
+<section><h3>النتائج</h3><ul><li>الحالة: ناجح أو راسب أو حرج أو بانتظار النهائي</li><li>ترتيب الطلاب في الشعبة</li><li>بحث سريع عن أي طالب</li><li>درجة النجاح قابلة للتعديل</li></ul></section>
+<section><h3>الطباعة وPDF</h3><ul><li>ركّب صفحات الطباعة كما تريد من أي فترات</li><li>تظهر الأنشطة بأسمائها التي سمّيتها</li><li>كشف أفقي بحجم A4، فيه خانات توقيع الأستاذ وولي الأمر</li><li>حفظ الكشف كملف PDF</li></ul></section>
+<section><h3>Excel</h3><ul><li>استيراد سجلاتك من ملف Excel</li><li>تصدير بتنسيق احترافي من اليمين إلى اليسار</li><li>معادلات حية تتحدث عند تعديل أي درجة</li><li>ورقة إضافية بملخص النتائج</li></ul></section>
+<section><h3>الأمان أثناء العمل</h3><ul><li>زر تراجع أحمر وزر إعادة التراجع أخضر</li><li>يحتفظ بآخر 60 خطوة، فتصلح الحذف أو التعديل الخاطئ</li></ul></section>
+<section><h3>الإنترنت والجوال</h3><ul><li>يحفظ عملك على جهازك ويرفعه تلقائياً عند توفر الاتصال</li><li>مؤشر يوضح حالة الحفظ</li><li>فتح سريع بعد التحميل الأول</li><li>يعمل على الحاسوب والهاتف، ويُثبَّت كتطبيق</li></ul></section>
+</div>
+<div class="df"><a class="cta" href="app.html">تسجيل الدخول</a></div>
+</dialog>
+<script>
+const $=s=>document.querySelector(s),fd=$('#fd'),op=()=>fd.showModal?fd.showModal():fd.setAttribute('open',''),cl=()=>fd.close?fd.close():fd.removeAttribute('open');
+$('#of').onclick=op;fd.querySelector('.x').onclick=cl;fd.addEventListener('click',e=>{if(e.target===fd)cl()});
+/* live calculator: same rules as the app (round inputs, absent counts zero, round the average) */
+const nrm=x=>String(x).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/[٫،,]/g,'.').trim(),AB={'غ':1,'غائب':1,'مج':1,'مجاز':1};
+const pv=v=>{const x=nrm(v);if(AB[x])return{n:0,t:x==='غ'||x==='غائب'?'غ':'مج',a:1};if(/^\d+(\.\d*)?$/.test(x))return{n:Math.min(100,Math.round(+x)),t:String(Math.min(100,Math.round(+x)))};return{n:0,t:'0'}};
+const RT=['ضعيف','متوسط','جيد','جيد جداً'],rk=r=>r<50?0:r<70?1:r<80?2:3;
+let shown=null;
+function calc(anim){const A=pv($('#ia').value),E=pv($('#ie').value),avg=(A.n+E.n)/2,r=Math.round(avg),k=rk(r),f=avg%1?avg.toFixed(1):String(avg);
+$('#eq').textContent='('+A.t+' + '+E.t+') ÷ 2 = '+f;
+$('#ex').textContent=(A.a||E.a)?'غ (غائب) ومج (مجاز) تُحسبان صفراً. '+(avg%1?f+' تُقرَّب إلى '+r+'.':''):(avg%1?f+' تُقرَّب إلى '+r+'، فكل ما كان 0.5 فأكثر يرتفع.':'العدد صحيح فلا يحتاج إلى تقريب.');
+$('#st').className='stamp k'+k;$('#sl').textContent=RT[k];
+const out=$('#sn');if(anim&&!matchMedia('(prefers-reduced-motion:reduce)').matches){const t0=performance.now(),to=r;const st=n=>{const p=Math.min(1,(n-t0)/700);out.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)}else out.textContent=r}
+$('#ia').addEventListener('input',()=>calc());$('#ie').addEventListener('input',()=>calc());
+const io=new IntersectionObserver(e=>{if(e[0].isIntersecting){calc(true);io.disconnect()}},{threshold:.4});io.observe($('.page'));
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+let dp;const ib=$('.ib');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;ib.classList.add('on')});
+ib.onclick=async()=>{if(!dp)return;dp.prompt();await dp.userChoice;dp=null;ib.classList.remove('on')};
+window.addEventListener('appinstalled',()=>ib.classList.remove('on'));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone)$('#ios').hidden=false;
+</script></body></html>
